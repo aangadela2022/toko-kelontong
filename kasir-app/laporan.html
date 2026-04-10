@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan - Kasir MVP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .container { padding: 20px; }
+        .filter-section { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; gap: 15px; align-items: flex-end;}
+        .report-board { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 20px; }
+        .report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;}
+        .report-table { width: 100%; border-collapse: collapse; }
+        .report-table th, .report-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        .report-table th { background-color: #f8f9fa; font-weight: 600; }
+        .text-right { text-align: right !important; }
+        .font-bold { font-weight: bold; }
+        .summary-row { background-color: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-store"></i> Kasir MVP</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-cash-register"></i> Transaksi</a></li>
+                <li><a href="produk.html"><i class="fas fa-box"></i> Produk</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li class="active"><a href="laporan.html"><i class="fas fa-file-invoice-dollar"></i> Laporan</a></li>
+                <li><a href="pengaturan.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-header">
+                <h1>Laporan Penjualan</h1>
+            </header>
+
+            <div class="container">
+                <div class="filter-section">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Pilih Bulan</label>
+                        <input type="month" id="filter-month" class="form-control">
+                    </div>
+                    <button class="btn btn-primary" id="btn-filter"><i class="fas fa-filter"></i> Tampilkan</button>
+                    <button class="btn btn-success" id="btn-export-excel" style="margin-left: auto;"><i class="fas fa-file-excel"></i> Export Excel</button>
+                    <button class="btn btn-danger" id="btn-clear-history"><i class="fas fa-trash"></i> Hapus Riwayat</button>
+                </div>
+
+                <div class="report-board">
+                    <div class="report-header">
+                        <h3 id="report-title">Laporan Penjualan</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="report-table" id="report-table">
+                            <thead>
+                                <tr>
+                                    <th>ID Transaksi</th>
+                                    <th>Tanggal</th>
+                                    <th>Waktu</th>
+                                    <th class="text-right">Total Item</th>
+                                    <th class="text-right">Total Belanja (Rp)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="report-data">
+                                <!-- Data Laporan -->
+                            </tbody>
+                            <tfoot>
+                                <tr class="summary-row">
+                                    <td colspan="3" class="text-right font-bold">TOTAL PENJUALAN KESELURUHAN</td>
+                                    <td class="text-right font-bold" id="report-total-qty">0</td>
+                                    <td class="text-right font-bold text-success" id="report-total-amount">Rp 0</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/excelExport.js"></script>
+    <script src="js/laporan.js"></script>
+</body>
+</html>

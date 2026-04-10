@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan - Kasir MVP</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .container { padding: 20px; max-width: 800px; margin: 0 auto; }
+        .settings-card { background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 30px; }
+        .settings-card h2 { margin-bottom: 25px; color: var(--text-primary); border-bottom: 1px solid #eee; padding-bottom: 10px;}
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-store"></i> Kasir MVP</h2>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html"><i class="fas fa-cash-register"></i> Transaksi</a></li>
+                <li><a href="produk.html"><i class="fas fa-box"></i> Produk</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="laporan.html"><i class="fas fa-file-invoice-dollar"></i> Laporan</a></li>
+                <li class="active"><a href="pengaturan.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <header class="top-header">
+                <h1>Pengaturan Toko</h1>
+            </header>
+
+            <div class="container">
+                <div class="settings-card">
+                    <h2>Profil Toko</h2>
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label>Nama Toko</label>
+                            <input type="text" id="store-name" required placeholder="Contoh: TOKO MAJU JAYA">
+                        </div>
+                        <div class="form-group">
+                            <label>Alamat Toko</label>
+                            <input type="text" id="store-address" required placeholder="Contoh: Jl. Merdeka No 10">
+                        </div>
+                        <div class="form-group">
+                            <label>Nomor HP / WhatsApp</label>
+                            <input type="text" id="store-phone" required placeholder="Contoh: 08123456789">
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save"></i> Simpan Profil</button>
+                        </div>
+                        <div id="save-notification" style="display: none; color: var(--success-color); margin-top: 15px; font-weight: 500; text-align: center;">
+                            <i class="fas fa-check-circle"></i> Profil berhasil disimpan!
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/profileToko.js"></script>
+</body>
+</html>

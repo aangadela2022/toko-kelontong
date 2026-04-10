@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasir - Toko Kelontong</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-store"></i> Kasir MVP</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="index.html"><i class="fas fa-cash-register"></i> Transaksi</a></li>
+                <li><a href="produk.html"><i class="fas fa-box"></i> Produk</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="laporan.html"><i class="fas fa-file-invoice-dollar"></i> Laporan</a></li>
+                <li><a href="pengaturan.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <h1 id="store-name-display">Toko Kelontong Kasir</h1>
+                <div class="datetime-display" id="datetime-display"></div>
+            </header>
+
+            <div class="transaction-grid">
+                <!-- Left Column: Input & Cart -->
+                <div class="left-panel panel">
+                    <div class="input-section">
+                        <div class="search-box">
+                            <i class="fas fa-barcode"></i>
+                            <input type="text" id="barcode-input" placeholder="Scan barcode atau ketik nama produk..." autocomplete="off" autofocus>
+                            <button id="btn-scan-camera" class="btn btn-icon" title="Scan dengan Kamera"><i class="fas fa-camera"></i></button>
+                        </div>
+                        <div id="autosuggest-container" class="autosuggest-dropdown hidden"></div>
+                    </div>
+                    
+                    <div id="camera-reader-container" class="hidden">
+                        <div id="reader"></div>
+                        <button id="btn-close-camera" class="btn btn-danger btn-sm mt-2">Tutup Kamera</button>
+                    </div>
+
+                    <div class="cart-section">
+                        <table class="cart-table">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Harga</th>
+                                    <th width="80">Qty</th>
+                                    <th>Subtotal</th>
+                                    <th width="50"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-items">
+                                <!-- Cart items will be rendered here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right Column: Summary & Payment -->
+                <div class="right-panel panel">
+                    <div class="product-highlight" id="product-highlight">
+                        <div class="empty-state">Belum ada produk terpilih</div>
+                        <!-- Highlighted product will show here -->
+                    </div>
+
+                    <div class="summary-section">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span id="subtotal-display">Rp 0</span>
+                        </div>
+                        <div class="summary-row total-row">
+                            <span>TOTAL</span>
+                            <span id="total-display" class="total-display">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <div class="payment-section">
+                        <div class="form-group">
+                            <label>DIBAYAR</label>
+                            <input type="number" id="payment-input" class="payment-input" placeholder="0">
+                        </div>
+                        <div class="quick-cash">
+                            <button class="btn btn-outline quick-cash-btn" data-amount="exact">Uang Pas</button>
+                            <button class="btn btn-outline quick-cash-btn" data-amount="10000">10k</button>
+                            <button class="btn btn-outline quick-cash-btn" data-amount="20000">20k</button>
+                            <button class="btn btn-outline quick-cash-btn" data-amount="50000">50k</button>
+                            <button class="btn btn-outline quick-cash-btn" data-amount="100000">100k</button>
+                        </div>
+                        <div class="summary-row change-row">
+                            <span>KEMBALIAN</span>
+                            <span id="change-display" class="change-display">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="btn-cancel" class="btn btn-danger btn-lg"><i class="fas fa-times"></i> Batal</button>
+                        <button id="btn-pay" class="btn btn-success btn-lg" disabled><i class="fas fa-check"></i> Proses & Cetak</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/produk.js"></script>
+    <script src="js/cameraScanner.js"></script>
+    <script src="js/autosuggest.js"></script>
+    <script src="js/productDisplay.js"></script>
+    <script src="js/transaksi.js"></script>
+    <script src="printer/thermalPrinter.js"></script>
+</body>
+</html>

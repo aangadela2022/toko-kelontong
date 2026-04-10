@@ -1,0 +1,112 @@
+/* Responsive Styles */
+@media screen and (max-width: 1024px) {
+    .transaction-grid {
+        grid-template-columns: 1fr 350px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .sidebar-header {
+        display: none; /* Hide header on mobile for space */
+    }
+
+    .nav-links {
+        display: flex;
+        padding: 5px 10px;
+        margin: 0;
+        width: 100%;
+    }
+
+    .nav-links li {
+        margin: 0 5px;
+        flex: 1;
+        text-align: center;
+    }
+
+    .nav-links a {
+        flex-direction: column;
+        padding: 8px 5px;
+        font-size: 0.8rem;
+        border-right: none;
+        border-bottom: 3px solid transparent;
+    }
+
+    .nav-links li.active a {
+        border-right: none;
+        border-bottom: 3px solid var(--primary-color);
+    }
+
+    .nav-links a i {
+        margin-right: 0;
+        margin-bottom: 5px;
+        font-size: 1.2rem;
+    }
+
+    .top-header {
+        padding: 10px 15px;
+    }
+
+    .top-header h1 {
+        font-size: 1.2rem;
+    }
+
+    .datetime-display {
+        font-size: 0.8rem;
+    }
+
+    .transaction-grid {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        gap: 15px;
+        overflow-y: auto; 
+    }
+    
+    .left-panel, .right-panel {
+        overflow: visible; /* Prevent scrollbar issues on mobile */
+    }
+
+    .product-price {
+        font-size: 36px;
+    }
+
+    .total-display {
+        font-size: 28px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn-lg {
+        padding: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .cart-table th, .cart-table td {
+        padding: 8px 5px;
+        font-size: 0.85rem;
+    }
+
+    .qty-input-group input {
+        width: 30px;
+    }
+    
+    .quick-cash-btn {
+        flex: 1 0 45%;
+        font-size: 0.85rem;
+    }
+}
