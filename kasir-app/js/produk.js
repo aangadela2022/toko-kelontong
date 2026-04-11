@@ -164,7 +164,13 @@ document.addEventListener('DOMContentLoaded', () => {
         openModal();
     });
 
-    closeModalBtn.addEventListener('click', closeModals);
+    closeModalBtn.addEventListener('click', () => {
+        if(window.AppScanner) {
+            const readerContainer = document.getElementById("camera-reader-container-product");
+            window.AppScanner.stopScanner(readerContainer);
+        }
+        closeModals();
+    });
     window.addEventListener('click', (e) => {
         if (e.target === modal) closeModals();
     });
@@ -249,4 +255,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Expose render function for csvImport.js to use
     window.renderProductTable = renderTable;
+
+    // Product Scanner Init
+    const btnScanProd = document.getElementById('btn-scan-product');
+    const btnCloseScanProd = document.getElementById('btn-close-camera-product');
+    const readerContainerProd = document.getElementById('camera-reader-container-product');
+    const barcodeInput = document.getElementById('pd-barcode');
+
+    if(btnScanProd && window.AppScanner) {
+        btnScanProd.addEventListener('click', () => {
+             window.AppScanner.startScanner("reader-product", readerContainerProd, (decodedText) => {
+                 barcodeInput.value = decodedText;
+             });
+        });
+        
+        btnCloseScanProd.addEventListener('click', () => {
+             window.AppScanner.stopScanner(readerContainerProd);
+        });
+    }
 });
