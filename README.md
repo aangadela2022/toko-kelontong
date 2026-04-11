@@ -1,32 +1,37 @@
-# Aplikasi Kasir Toko Kelontong (MVP)
+# 🏪 Aplikasi Kasir Toko Kelontong (Premium MVP)
 
-Aplikasi kasir sederhana berbasis web untuk pengelolaan toko kelontong. Project ini mencakup frontend HTML/JS dan backend Node.js sederhana dengan SQLite.
+![Banner](app_landing_page_mockup_1775867193897.png)
 
-## Fitur Utama
-- **Manajemen Produk**: Tambah, edit, hapus, dan import produk via CSV (mendukung kolom Satuan).
-- **Transaksi Kasir**: Scan barcode, autosuggest produk, keranjang belanja, dan hitung kembalian.
-- **Laporan Penjualan**: Dashboard grafik (Chart.js) dan export laporan ke Excel (SheetJS).
-- **Cetak Struk**: Format struk belanja untuk thermal printer.
+Aplikasi manajemen toko kelontong modern yang dirancang untuk kecepatan, akurasi, dan estetika. Menggabungkan kemudahan penggunaan frontend web dengan performa backend SQLite.
 
-## Cara Menjalankan
+## ✨ Fitur Unggulan
 
-### 1. Persiapan Backend
-Pastikan Anda memiliki [Node.js](https://nodejs.org/) terinstal.
+- **🚀 Transaksi Instan**: Scan barcode cepat atau pencarian otomatis (autosuggest).
+- **📦 Inventaris Pintar**: Kelola stok barang lengkap dengan satuan (Pcs, Kg, dll).
+- **📊 Dashboard Visual**: Pantau performa bisnis Anda melalui grafik interaktif harian dan bulanan.
+- **📄 Export & Cetak**: Cetak struk belanja thermal dan export laporan ke Excel dalam satu klik.
+- **🎨 Premium UI**: Antarmuka modern yang responsif dan nyaman dipandang.
+
+## 🛠️ Cara Menjalankan
+
+### 1. Jalankan Backend (Node.js)
 ```bash
 cd backend
 npm install
 node server.js
 ```
-Server akan berjalan di `http://localhost:3000`.
 
-### 2. Menjalankan Frontend
-Setelah backend berjalan, buka file berikut di browser Anda:
-`kasir-app/index.html`
+### 2. Buka Aplikasi
+Setelah backend aktif, cukup buka file berikut di browser Anda:
+```text
+index.html (di direktori root)
+```
 
-## Struktur Project
-- `kasir-app/`: Berisi file frontend (HTML, CSS, JS).
-- `backend/`: API Express.js dan database SQLite.
-- `blueprint.md`: Dokumentasi teknis aplikasi.
+## 📂 Struktur Folder
+- `/kasir-app`: Frontend aplikasi utama.
+- `/backend`: API server dan database.
+- `/data`: Sample data CSV.
 
-## Lisensi
-MIT
+---
+Dikembangkan oleh **Antigravity AI** untuk pengalaman pengelolaan toko yang lebih baik.
+
