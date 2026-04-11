@@ -1,9 +1,9 @@
 // cameraScanner.js - Wrapper for html5-qrcode library
-// Updated to be more flexible for different pages/inputs
+// Refactored to use Html5Qrcode for better control over camera selection (facing back)
 
 class CameraScanner {
     constructor() {
-        this.html5QrcodeScanner = null;
+        this.html5QrCode = null;
         this.isScanning = false;
         
         // Auto-init for transaction page if elements exist
@@ -34,48 +34,79 @@ class CameraScanner {
         }
     }
 
-    // Generic start scanner
-    startScanner(containerId, readerContainer, onResultCallback) {
-        if (!window.Html5QrcodeScanner) {
+    /**
+     * Generic start scanner using Html5Qrcode for better camera control
+     * @param {string} containerId - Element ID for the video stream
+     * @param {HTMLElement} readerDiv - Container div to show/hide
+     * @param {function} onResultCallback - Callback when barcode found
+     */
+    async startScanner(containerId, readerDiv, onResultCallback) {
+        if (!window.Html5Qrcode) {
             console.error("html5-qrcode library not loaded!");
             return;
         }
 
-        readerContainer.classList.remove("hidden");
-        
-        if (!this.html5QrcodeScanner) {
-            this.html5QrcodeScanner = new Html5QrcodeScanner(
-                containerId, 
-                { fps: 10, qrbox: { width: 250, height: 150 } },
-                /* verbose= */ false
-            );
-        }
+        try {
+            if (this.isScanning) {
+                await this.stopScanner(null);
+            }
 
-        this.html5QrcodeScanner.render((decodedText, decodedResult) => {
-            // Stop on result
-            this.stopScanner(readerContainer);
-            onResultCallback(decodedText, decodedResult);
-        }, (errorMessage) => {
-            // Error ignored
-        });
-        
-        this.isScanning = true;
+            readerDiv.classList.remove("hidden");
+            this.html5QrCode = new Html5Qrcode(containerId);
+            
+            const config = { 
+                fps: 10, 
+                qrbox: { width: 250, height: 150 },
+                aspectRatio: 1.0
+            };
+
+            // Start scanning with prioritized back camera (environment)
+            await this.html5QrCode.start(
+                { facingMode: "environment" }, 
+                config,
+                (decodedText) => {
+                    // Success callback
+                    this.stopScanner(readerDiv);
+                    onResultCallback(decodedText);
+                },
+                (errorMessage) => {
+                    // Verbose error logs removed to avoid console spam
+                }
+            );
+
+            this.isScanning = true;
+            console.log("Scanner started on", containerId);
+        } catch (err) {
+            console.error("Error starting scanner:", err);
+            alert("Gagal mengakses kamera. Pastikan izin kamera diberikan.");
+            readerDiv.classList.add("hidden");
+            this.isScanning = false;
+        }
     }
 
-    stopScanner(readerContainer) {
-        if (this.html5QrcodeScanner) {
-            this.html5QrcodeScanner.clear().then(() => {
-                if(readerContainer) readerContainer.classList.add("hidden");
+    async stopScanner(readerDiv) {
+        if (this.html5QrCode && this.isScanning) {
+            try {
+                await this.html5QrCode.stop();
+                this.html5QrCode.clear();
+                this.html5QrCode = null;
                 this.isScanning = false;
-            }).catch(error => {
-                console.error("Gagal stop scanner", error);
-                if(readerContainer) readerContainer.classList.add("hidden");
+                if (readerDiv) readerDiv.classList.add("hidden");
+                console.log("Scanner stopped");
+            } catch (err) {
+                console.error("Error stopping scanner:", err);
+                // Fallback
+                if (readerDiv) readerDiv.classList.add("hidden");
                 this.isScanning = false;
-            });
+            }
+        } else if (readerDiv) {
+            readerDiv.classList.add("hidden");
         }
     }
 
     async handleTransactionScan(barcode, inputField) {
+        if (!window.api) return;
+        
         const res = await window.api.getProdukByBarcode(barcode);
         const prod = res && res.data ? res.data : null;
         

@@ -147,6 +147,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const closeModals = () => {
+        if(window.AppScanner) {
+            const readerContainer = document.getElementById("camera-reader-container-product");
+            window.AppScanner.stopScanner(readerContainer);
+        }
         modal.style.display = 'none';
         form.reset();
         isEditing = false;
@@ -233,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.disabled = false;
 
         if (success) {
+            alert(isEditing ? 'Produk berhasil diperbarui!' : 'Produk berhasil ditambahkan!');
             closeModals();
             renderTable();
         }
