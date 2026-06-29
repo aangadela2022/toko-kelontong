@@ -256,9 +256,26 @@ class CameraScanner {
                 }
             };
 
-            // Start scanning with prioritized back camera (environment)
+            let cameraToUse = { facingMode: "environment" };
+            try {
+                const cameras = await Html5Qrcode.getCameras();
+                if (cameras && cameras.length > 0) {
+                    const backCamera = cameras.find(c => c.label.toLowerCase().includes("back") || 
+                                                         c.label.toLowerCase().includes("environment") || 
+                                                         c.label.toLowerCase().includes("belakang") || 
+                                                         c.label.toLowerCase().includes("rear") ||
+                                                         c.label.toLowerCase().includes("facing back"));
+                    if (backCamera) {
+                        cameraToUse = backCamera.id;
+                    }
+                }
+            } catch (e) {
+                console.warn("Error getting cameras beforehand:", e);
+            }
+
+            // Start scanning with prioritized back camera
             await this.html5QrCode.start(
-                { facingMode: "environment" }, 
+                cameraToUse, 
                 config,
                 (decodedText) => {
                     // Success callback
