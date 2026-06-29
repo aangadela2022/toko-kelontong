@@ -155,7 +155,7 @@ const TransactionManager = {
         const btnPay = document.getElementById('btn-pay');
         
         if (this.cart.length === 0) {
-            changeDisplay.textContent = 'Rp 0';
+            changeDisplay.textContent = '0';
             changeDisplay.style.color = 'var(--text-secondary)';
             btnPay.disabled = true;
             return;

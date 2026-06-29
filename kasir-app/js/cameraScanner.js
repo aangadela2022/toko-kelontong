@@ -243,14 +243,17 @@ class CameraScanner {
             
             // Highly sensitive config
             const config = { 
-                fps: 25, // increase to 25fps for faster recognition
+                fps: 60, // Maximum fps for fastest recognition
+                disableFlip: false, // Allow scanning upside-down or mirrored barcodes
+                videoConstraints: {
+                    advanced: [{ focusMode: "continuous" }]
+                },
                 qrbox: (width, height) => {
-                    // Wide and shallow rectangular guide, optimized for 1D product barcodes
-                    const boxWidth = Math.min(width * 0.85, 450);
-                    const boxHeight = Math.min(height * 0.35, 180);
+                    // Larger area to make scanning much easier without strict alignment
+                    const boxWidth = Math.min(width * 0.95, 600);
+                    const boxHeight = Math.min(height * 0.6, 400);
                     return { width: Math.floor(boxWidth), height: Math.floor(boxHeight) };
                 }
-                // Removed aspectRatio: 1.0 to allow wide camera aspect ratios
             };
 
             // Start scanning with prioritized back camera (environment)

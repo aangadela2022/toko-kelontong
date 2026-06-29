@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                 setTimeout(() => {
                     saveNotification.style.display = 'none';
                 }, 3000);
-                
+                // Save to local storage so UI can read it
+                Storage.save(STORAGE_KEYS.PROFILE, newProfile);
+
                 // Update UI globally if a function for that exists (will implement in app.js)
                 if (typeof App !== 'undefined' && App.updateStoreInfoUI) {
                     App.updateStoreInfoUI();

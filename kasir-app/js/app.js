@@ -1,10 +1,7 @@
 // app.js - General layout & generic utilities
 const App = {
-    // Format currency
     formatCurrency: (amount) => {
         return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         }).format(amount);
@@ -21,10 +18,24 @@ const App = {
     },
 
     // Update Store Info
-    updateStoreInfoUI: () => {
+    updateStoreInfoUI: async () => {
         const nameDisplay = document.getElementById('store-name-display');
         if (nameDisplay) {
-            const profile = Storage.get(STORAGE_KEYS.PROFILE);
+            let profile = Storage.get(STORAGE_KEYS.PROFILE);
+            
+            // Try fetching from API to ensure it's up to date
+            try {
+                if (window.api && window.api.getProfil) {
+                    const res = await window.api.getProfil();
+                    if (res && res.data) {
+                        profile = res.data;
+                        Storage.save(STORAGE_KEYS.PROFILE, profile);
+                    }
+                }
+            } catch(e) {
+                console.error("Failed to fetch profile for UI", e);
+            }
+
             if (profile && profile.nama_toko) {
                 nameDisplay.textContent = profile.nama_toko;
             } else {

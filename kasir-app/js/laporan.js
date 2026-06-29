@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (filteredData.length === 0) {
             reportTable.innerHTML = `<tr><td colspan="5" class="text-center" style="padding:20px; color:var(--text-secondary);">Tidak ada transaksi pada bulan ini</td></tr>`;
             document.getElementById('report-total-qty').textContent = '0';
-            document.getElementById('report-total-amount').textContent = 'Rp 0';
+            document.getElementById('report-total-amount').textContent = '0';
             document.getElementById('report-title').textContent = monthFilter ? `Laporan Penjualan - ${monthFilter}` : 'Semua Laporan Penjualan';
             return;
         }
