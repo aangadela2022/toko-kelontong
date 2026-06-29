@@ -245,9 +245,6 @@ class CameraScanner {
             const config = { 
                 fps: 60, // Maximum fps for fastest recognition
                 disableFlip: false, // Allow scanning upside-down or mirrored barcodes
-                videoConstraints: {
-                    advanced: [{ focusMode: "continuous" }]
-                },
                 qrbox: (width, height) => {
                     // Larger area to make scanning much easier without strict alignment
                     const boxWidth = Math.min(width * 0.95, 600);
@@ -256,36 +253,84 @@ class CameraScanner {
                 }
             };
 
-            let cameraToUse = { facingMode: "environment" };
+            // Strategy: Try multiple approaches to get back camera
+            let started = false;
+
+            // Approach 1: Find back camera by ID from device list
             try {
                 const cameras = await Html5Qrcode.getCameras();
                 if (cameras && cameras.length > 0) {
-                    const backCamera = cameras.find(c => c.label.toLowerCase().includes("back") || 
-                                                         c.label.toLowerCase().includes("environment") || 
-                                                         c.label.toLowerCase().includes("belakang") || 
-                                                         c.label.toLowerCase().includes("rear") ||
-                                                         c.label.toLowerCase().includes("facing back"));
+                    // Try to find back camera by label keywords
+                    const backCamera = cameras.find(c => {
+                        const label = (c.label || "").toLowerCase();
+                        return label.includes("back") || 
+                               label.includes("environment") || 
+                               label.includes("belakang") || 
+                               label.includes("rear") ||
+                               label.includes("facing back") ||
+                               label.includes("0, facing back");
+                    });
+                    
                     if (backCamera) {
-                        cameraToUse = backCamera.id;
+                        await this.html5QrCode.start(
+                            backCamera.id, 
+                            config,
+                            (decodedText) => {
+                                this.stopScanner(readerDiv);
+                                onResultCallback(decodedText);
+                            },
+                            () => {}
+                        );
+                        started = true;
+                    } else if (cameras.length >= 2) {
+                        // On most phones, the last camera is the back camera
+                        await this.html5QrCode.start(
+                            cameras[cameras.length - 1].id, 
+                            config,
+                            (decodedText) => {
+                                this.stopScanner(readerDiv);
+                                onResultCallback(decodedText);
+                            },
+                            () => {}
+                        );
+                        started = true;
                     }
                 }
             } catch (e) {
-                console.warn("Error getting cameras beforehand:", e);
+                console.warn("Approach 1 (camera ID) failed:", e);
+                started = false;
             }
 
-            // Start scanning with prioritized back camera
-            await this.html5QrCode.start(
-                cameraToUse, 
-                config,
-                (decodedText) => {
-                    // Success callback
-                    this.stopScanner(readerDiv);
-                    onResultCallback(decodedText);
-                },
-                (errorMessage) => {
-                    // Verbose error logs removed to avoid console spam
+            // Approach 2: Use facingMode exact constraint (strict)
+            if (!started) {
+                try {
+                    await this.html5QrCode.start(
+                        { facingMode: { exact: "environment" } }, 
+                        config,
+                        (decodedText) => {
+                            this.stopScanner(readerDiv);
+                            onResultCallback(decodedText);
+                        },
+                        () => {}
+                    );
+                    started = true;
+                } catch (e) {
+                    console.warn("Approach 2 (exact environment) failed:", e);
                 }
-            );
+            }
+
+            // Approach 3: Use facingMode without exact (lenient fallback)
+            if (!started) {
+                await this.html5QrCode.start(
+                    { facingMode: "environment" }, 
+                    config,
+                    (decodedText) => {
+                        this.stopScanner(readerDiv);
+                        onResultCallback(decodedText);
+                    },
+                    () => {}
+                );
+            }
 
             this.isScanning = true;
             console.log("Scanner started on", containerId);
